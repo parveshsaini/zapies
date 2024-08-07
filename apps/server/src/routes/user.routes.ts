@@ -65,14 +65,24 @@ router.post("/login", async (req, res) => {
         })
     }
 
+    const hashedPassword= await bcrypt.hash(parsedData.data.password, 10);
+
+
     const user = await prisma.user.findFirst({
         where: {
-            email: parsedData.data.email,
-            password: parsedData.data.password
+            email: parsedData.data.email
         }
     });
     
     if (!user) {
+        return res.status(403).json({
+            message: "User not found"
+        })
+    }
+
+    const passwordMatch = await bcrypt.compare(parsedData.data.password, user.password);
+
+    if (!passwordMatch) {
         return res.status(403).json({
             message: "Sorry credentials are incorrect"
         })

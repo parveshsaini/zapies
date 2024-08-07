@@ -58,19 +58,27 @@ router.post("/", authMiddleware, async (req, res) => {
   });
 });
 
-router.get("/", authMiddleware, (req, res) => {
+router.get("/", authMiddleware, async(req, res) => {
   const request = req as RequestWithId;
 
   const userId = request.id;
 
-  const zaps = prisma.zap.findMany({
+  const zaps = await prisma.zap.findMany({
     where: {
       userId,
     },
-    include: {
-      actions: true,
-      trigger: true,
-    },
+    include:{
+      actions: {
+        include: {
+          type: true
+        }
+      },
+      trigger: {
+        include: {
+          type: true
+        }
+      }
+  }
   });
 
   return res.json({
@@ -78,18 +86,26 @@ router.get("/", authMiddleware, (req, res) => {
   });
 });
 
-router.get("/:zapId", authMiddleware, (req, res) => {
+router.get("/:zapId", authMiddleware, async(req, res) => {
     const request= req as RequestWithId
     const userId = request.id;
 
-    const zap= prisma.zap.findFirst({
+    const zap= await prisma.zap.findFirst({
         where:{
             id: req.params.zapId,
             userId
         },  
         include:{
-            actions: true,
-            trigger: true
+            actions: {
+              include: {
+                type: true
+              }
+            },
+            trigger: {
+              include: {
+                type: true
+              }
+            }
         }
     })
 

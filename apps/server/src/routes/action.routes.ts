@@ -3,17 +3,10 @@ import { Router } from "express";
 
 const router: Router= Router()
 
-router.get("/", (req, res)=> {
-    const actions= prisma.availableAction.findMany({
-        select:{
-            id: true,
-            name: true,
-            image: true,
+router.get("/", async(req, res)=> {
+    const actions= await prisma.availableAction.findMany()
 
-        }
-    })
-
-    res.json({
+    return res.json({
         actions
     })
 })
