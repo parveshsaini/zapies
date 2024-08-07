@@ -1,10 +1,15 @@
-import Image from "next/image";
-import { Button } from "@repo/ui/button";
-import {SigninSchema} from "@repo/types/zod"
+import { Appbar } from "./_components/Appbar";
+import { Hero } from "./_components/Hero";
+
+
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="bg-red-500"> hello world</div>
+    <main className="pb-48">
+        <Appbar />
+        <Hero />
+        <div className="pt-8">
+          video here
+        </div>
     </main>
   );
 }
